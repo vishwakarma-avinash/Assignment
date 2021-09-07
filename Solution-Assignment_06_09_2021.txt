@@ -1,0 +1,121 @@
+//Program to replace a character with another character
+
+public class ReplaceCharacter
+{
+	public static void main(String[] args) {
+    
+    String str1="halo";
+    String[] array=str1.split(" ");
+    for(int i=0;i<arr.length();i++)
+    {
+        if(str1[i]=='a')
+	{
+	str1[i]='e';
+	}
+
+	else
+	System.out.println("String does not contain given charcter");
+        
+        
+        
+    }
+	}
+	
+	System.out.println(String with replaced character:"+str1);
+}
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+// Program to check whether a string starts with 'A' and ends with 't'
+
+public class StartEnd
+{
+	String Str1;
+	Scanner sc=new Scanner(System.in)
+	str1=sc.nextLine();
+	int len= str1.length();
+	String[] arr =str1.split(" ");
+	if(str1[0]=='A' && str1[len-1])
+	Sytem.out.println("Given string starts with A and ends with t"+str1);
+	else
+	System.out.println("Given string does not starts with A and ends with t"+str1);
+}
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+//Program to override toString, equals(), hashcode() methods.
+
+public class Student
+{
+	int rollNo;
+	int age;
+	String firstName;
+	String lastName;
+
+	public Student(int rollNo, int age, String firstName, String lastName)
+	{	
+		super();
+		this.rollNo=rollNo;
+		this.age=age;
+		this.firstName=firstName;
+		this.lastName=lastName;
+	}
+
+	Student student1= new Student(100111, 17, "Alex", "Steven");
+	
+	@Override
+	public String toString()
+	{
+		return "Student [ rollNo=" +rollNo + ", age = " +age+ ", firstname =" +firstName+ ", lastName= "+lastName+" ]";
+	}
+
+	@Override
+	public boolean verifyStuudent()
+	{
+		if(rollNo.equals(super.courseId)) //Let say a Student is assigned a course Id which is similar to Student rollno.
+		{
+		  return true;
+		}	
+	}
+	
+	@Override
+	public int hashcode()
+	{
+		return rollNo^age^firstName.hashcode()^lastName.hashcode();
+	}
+	
+
+}
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+//Program to Mask a string after first two character.
+
+public class MaskString
+{
+	String str1="Steve Rogers";
+	String maskedString= "";
+	String[] array =str1.split(" ");
+	int len= arr.length;
+	for(int i=0; i<len; i++)
+	{
+		for(int j=0; j<arr[i].length(); j++)
+		{
+			if(j>2 && j<arr[i].length())
+			{
+				maskedString+= "x";
+			}
+			else
+			{
+				char str2 = arr[i].charAt(j);
+				maskedString += str2; 
+			}			
+		}
+	}
+
+	System.out.println(maskedString);
+}
