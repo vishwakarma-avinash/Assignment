@@ -1,0 +1,17 @@
+// Program to find and replace a word in a Stringbuffer
+
+public class FindRepace
+{
+	public static void main(String[] args) {
+	    
+	    StringBuffer str1= new StringBuffer();
+	    str1.append("Java is Object Oriented. Java is a programming language.");
+	    String str2="Java";
+	    int len=str2.length();
+	    System.out.println(str1);
+	    int index=str1.indexOf("Java");
+	    System.out.println("Java is present in String at index: "+index);
+	    str1.replace(index, len, "C++");
+	    System.out.println(str1);
+	    }
+}
