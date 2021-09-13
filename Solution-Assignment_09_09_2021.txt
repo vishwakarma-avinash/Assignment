@@ -1,0 +1,250 @@
+ Create an interface with functionality of calculating simple interest,compound interest on principal amount based on given interest rates.
+
+Provide implementation of these functionality in a class
+
+package com.yash.assignments;
+
+public interface Calculator {
+	
+	public double calculateSimpleInterest(float principleAmount, float time, float interestRate);
+	
+	public double calculateCompoundInterest(float principleAmount, float time, float interestRate);
+
+}
+
+package com.yash.assignments;
+
+import java.util.Scanner;
+
+public class InterestCalculater implements Calculator{
+	
+	float principleAmount;
+	float time;
+	float interestRate;
+	float simpleInterest;
+	double compoundInterest;
+	int choice=0;
+	
+	
+	
+	@Override
+	public double calculateSimpleInterest(float principleAmount, float time, float interestRate) {
+		simpleInterest = (principleAmount*time*interestRate)/100;
+		return simpleInterest;
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double calculateCompoundInterest(float principleAmount, float time, float interestRate) {
+		// TODO Auto-generated method stub
+		
+		compoundInterest=principleAmount * Math.pow(1.0+interestRate/100.0,time) - principleAmount;
+		return compoundInterest;
+		
+	}
+	
+	public void getInput()
+	{
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter principle amount:");
+		principleAmount=sc.nextFloat();
+		System.out.println("Enter time");
+		time=sc.nextFloat();
+		System.out.println("Enter interest rate:");
+		interestRate=sc.nextFloat();
+		
+	}
+	
+	public void display()
+	{
+		getInput();
+		System.out.println("Enter your choice:");
+		System.out.println("Press: 1. Simple Interest OR 2. Compound Interest");
+		
+		Scanner input=new Scanner(System.in);
+		choice=input.nextInt();
+		
+		switch(choice)
+		{
+		case 1: System.out.println("Simple Interest:"
+		+calculateSimpleInterest(principleAmount, time, interestRate ));
+				break;
+				
+		case 2: System.out.println("Compound Interest:"
+				+calculateCompoundInterest(principleAmount, time, interestRate ));
+				break;
+		
+		}
+		
+	}
+	
+	
+	public static void main(String[] args)
+	{
+		InterestCalculater obj1=new InterestCalculater();
+		obj1.display();
+	}
+
+	
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Create a class Person and implement Serializable ,
+
+personId
+personName
+personAge
+personLocation
+....
+get()... set()
+
+ Using Reflection API
+
+   1.List all the constructors in Person class.
+   2.Write a code to dynamically create an object of Person class using class data.
+   3. Identify if Person class is implementing Serializable interface
+   4. Identify if Person class has getter() and setter() methods.package com.yash.assignments;
+
+
+import java.io.Serializable;
+
+public class Person implements Serializable{
+	
+	private int personId;
+	private String personName;
+	public int personAge;
+	public String personLocation;
+	
+	public Person()
+	{
+		
+	}
+	
+	public Person(int personId, String personName, int personAge, String personLocation)
+	{
+		this.personId=personId;
+		this.personAge=personAge;
+		this.personName=personName;
+		this.personLocation=personLocation;
+	}
+	
+	public void setPersonId()
+	{
+		this.personId=personId;
+	}
+	
+	public int getPersonId()
+	{
+		return personId;
+	}
+	
+	public void setPersonName()
+	{
+		this.personName=personName;
+	}
+	
+	public String getPersonNAme()
+	{
+		return personName;
+	}
+	
+	public void setPersonAge()
+	{
+		this.personAge=personAge;
+	}
+	
+	public int getPersonAge()
+	{
+		return personAge;
+	}
+	
+	public void setPersonLocation()
+	{
+		this.personLocation=personLocation;
+	}
+	
+	public String getPersonLocation()
+	{
+		return personLocation;
+	}
+	
+
+}
+
+
+
+package com.yash.assignments;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+public class Data {
+
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException
+	{
+		Person person1 =new Person();
+		Class classData1= person1.getClass();
+		
+		ClassLoader loader1 = ClassLoader.getSystemClassLoader();
+		Class classData2 = loader1.loadClass("com.yash.assignments.Person");
+		
+		Class classData3= Class.forName("com.yash.assignments.Person");
+		
+		Constructor[] constructors= classData1.getConstructors();
+		
+		System.out.println("Construcors are:");
+		for(Constructor consobj : constructors)
+		{
+			System.out.println(consobj);
+		}
+		
+		//Dynamic object initialization
+		Person person2= (Person)classData3.newInstance();
+		
+		//Checking whether class implements Serializable or not
+		Class[] inf= classData2.getInterfaces();
+		if(inf.equals("Serializable"))
+		{
+			System.out.println("Person class implements Serializable interface");
+		}
+		else
+		{
+			System.out.println("Person class does not implement Seializable interface");
+		}
+		
+		//Checking fields of Person class
+		Field[] fields = classData3.getFields();
+		for(Field fieldsInPerson : fields)
+		{
+			System.out.println(fieldsInPerson);
+		}
+		
+		
+		//Checking whether class implements setter() and getter()
+		
+		Method[] methods = classData3.getMethods();
+		for(Method method : methods)
+		{
+			System.out.println(method);
+		}
+		
+		for(int i=0; i<methods.length;i++)
+		if(methods[i].startsWith("get"))
+		{
+			System.out.println("Person class has getter methods");
+		}
+		
+		for(int i=0; i<methods.length;i++)
+			if(methods[i].startsWith("set"))
+			{
+				System.out.println("Person class has setter methods");
+			}
+		
+		
+	}
+}
+
+
