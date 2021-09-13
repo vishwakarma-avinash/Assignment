@@ -1,0 +1,151 @@
+ Create an interface with functionality of calculating simple interest,compound interest on principal amount based on given interest rates.
+
+Provide implementation of these functionality in a class
+
+package com.yash.assignments;
+
+import java.util.Scanner;
+
+public class InterestCalculater {
+	
+	float principleAmount;
+	float time;
+	float interestRate;
+	float simpleInterest;
+	double compoundInterest;
+	int choice=0;
+	
+	
+	public float calculateSimpleInterest(float principleAmount, float time, float interestRate)
+	{
+		simpleInterest = (principleAmount*time*interestRate)/100;
+		return simpleInterest;
+	}
+	
+	public double calculateCompoundInterest(float principleAmount, float time, float interestRate)
+	{
+		compoundInterest=principleAmount * Math.pow(1.0+interestRate/100.0,time) - principleAmount;
+		return compoundInterest;
+	}
+	
+	public void getInput()
+	{
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter principle amount:");
+		principleAmount=sc.nextFloat();
+		System.out.println("Enter time");
+		time=sc.nextFloat();
+		System.out.println("Enter interest rate:");
+		interestRate=sc.nextFloat();
+		
+	}
+	
+	public void display()
+	{
+		getInput();
+		System.out.println("Enter your choice:");
+		System.out.println("Press: 1. Simple Interest OR 2. Compound Interest");
+		
+		Scanner input=new Scanner(System.in);
+		choice=input.nextInt();
+		
+		switch(choice)
+		{
+		case 1: System.out.println("Simple Interest:"
+		+calculateSimpleInterest(principleAmount, time, interestRate ));
+				break;
+				
+		case 2: System.out.println("Compound Interest:"
+				+calculateCompoundInterest(principleAmount, time, interestRate ));
+				break;
+		
+		}
+		
+	}
+	
+	
+	public static void main(String[] args)
+	{
+		InterestCalculater obj1=new InterestCalculater();
+		obj1.display();
+	}
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Create an menu drive console-based application to register,view,update and delete student details.
+
+Use static arrays for storage of student objects.
+
+package com.yash.entity;
+
+public class Student {
+	
+	private int studentId;
+	private String studentFirstName;
+	private String studentLastName;
+	private String studentDob;
+	private char studentGender;
+	private String studentCourse;
+	
+	public int getStudentId()
+	{
+		return studentId;
+	}
+	
+	public void setStudentId()
+	{
+		this.studentId=studentId;
+	}
+	
+	public String getStudentFirstName()
+	{
+		return studentFirstName;
+	}
+	
+	public void setStudentFirstName()
+	{
+		this.studentFirstName=studentFirstName;
+	}
+	
+	public String getStudentLastName()
+	{
+		return studentLastName;
+	}
+	
+	public void setStudentLastName()
+	{
+		this.studentLastName=studentLastName;
+	}
+	
+	public String getStudentDob()
+	{
+		return studentDob;
+	}
+	
+	public void setStudentDob()
+	{
+		this.studentDob=studentDob;
+	}
+	
+	public char getStudentGender()
+	{
+		return studentGender;
+	}
+	
+	public void setStudnetGender()
+	{
+		this.studentGender=studentGender;
+	}
+	
+	public String getStudentCourse()
+	{
+		return studentCourse;
+	}
+	
+	public void setStudnetCourse()
+	{
+		this.studentCourse=studentCourse;
+	}
+}
+
