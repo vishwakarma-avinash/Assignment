@@ -1,0 +1,244 @@
+1. Ask user to enter five names
+
+   convert third character in a name to uppercasepackage com.yash.assignments;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class ListPractice1 {
+	
+	public static void main(String[] args)
+	{
+		List<String> names = new ArrayList<>();
+		Scanner input= new Scanner(System.in);
+		
+		System.out.println("Enter any five name");
+		
+		for(int i=0;i<5;i++)
+		{
+			String name= input.nextLine();
+			names.add(name);
+			
+		}
+		System.out.println("Input given by user");
+		System.out.println(names);
+		
+		String[] nameArray = new String[names.size()];
+		names.toArray(nameArray);
+		
+		for(String x: nameArray)
+		{
+			System.out.println(x.toUpperCase());
+			
+		}
+	}
+
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ Ask user to enter 6 student records with following attributes
+
+   Roll No
+   firstName
+   lastName
+   age
+   semester 1 marks
+   semester 2 marks
+   semester 3 marks
+
+ display Sorted student details based on age,firstName and lastName in ascending order.
+
+ display Sorted student details based on percentage of semester marks in descending order.
+
+package com.yash.assignments;
+
+import java.util.Arrays;
+
+public class Student implements Comparable <Student>{
+	
+	private int rollNo;
+	private String studentFirstName;
+	private String studentLastName;
+	private int age;
+	private int[] semMarks=new int[3];
+	private int percentage;
+	private int total=0;
+	
+	public int getRollNo() {
+		return rollNo;
+	}
+	public void setRollNo(int rollNo) {
+		this.rollNo = rollNo;
+	}
+	public String getStudentFirstName() {
+		return studentFirstName;
+	}
+	public void setStudentFirstName(String studentFirstName) {
+		this.studentFirstName = studentFirstName;
+	}
+	public String getStudentLastName() {
+		return studentLastName;
+	}
+	public void setStudentLastName(String studentLastName) {
+		this.studentLastName = studentLastName;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public int[] getSemMarks() {
+		return semMarks;
+	}
+	public void setSemMarks(int[] semMarks) {
+		this.semMarks = semMarks;
+	}
+	
+	public float percentage(int[] semMarks)
+	{
+		for(int i=0;i<semMarks.length;i++)
+			total=total+semMarks[i];
+		
+		percentage=(total/300)*100;
+		return percentage;
+		
+	}
+	@Override
+	public String toString() {
+		return "Student [rollNo=" + rollNo + ", studentFirstName=" + studentFirstName + ", studentLastName="
+				+ studentLastName + ", age=" + age + ", semMarks=" + Arrays.toString(semMarks) + "]";
+	}
+	@Override
+	public int compareTo(Student o) {
+
+		if(this.age>o.age)
+			return 1;
+		else 
+		if(this.age<o.age)
+			return -1;
+		else return 0;
+	}
+	public int compareTo1(Student o) {
+
+		if(this.percentage<o.percentage)
+			return 1;
+		else 
+		if(this.percentage>o.percentage)
+			return -1;
+		else return 0;
+	}
+}
+
+package com.yash.assignments;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
+
+public class ListStudentPractice {
+	
+	class SortStudentBasedOnFirstName implements Comparator<Student>{
+		@Override
+		public int compare(Student o1, Student o2) {
+			return o1.getStudentFirstName().compareTo(o2.getStudentFirstName());
+		}
+	
+	}
+	
+	class SortStudentBasedOnLastName implements Comparator<Student>{
+		@Override
+		public int compare(Student o1, Student o2) {
+			return o1.getStudentLastName().compareTo(o2.getStudentLastName());
+		}
+	
+	}
+	
+	class SortStudentBasedOnPercentage implements Comparator<Student>
+	{
+
+		@Override
+		public int compare(Student o1, Student o2) {
+			// TODO Auto-generated method stub
+			return o1.percentage(marks).compareTo(o2.percentage(marks));
+		}
+		
+	}
+	
+	
+	public static void main(String[] args)
+	{
+		List <Student> studentList= new ArrayList<>();
+		
+		Scanner input= new Scanner(System.in);
+		
+		for(int i=0;i<6;i++)
+		{
+			System.out.println("Student"+i+1);
+			
+			System.out.print("Enter roll no:");
+			int rollNo= input.nextInt();
+			
+			System.out.print("Enter first name:");
+			String firstName=input.next();
+			
+			System.out.print("Enter last name:");
+			String lastName=input.next();
+			
+			System.out.print("Enter age:");
+			int age=input.nextInt();
+			
+			
+			System.out.println("Enter Semester marks:");
+			int marks[] = new int[3];
+			for(int j=0;j<3;j++)
+			{
+				marks[j] = input.nextInt();
+			}
+			
+			Student student =new Student();
+			student.setRollNo(rollNo);
+			student.setStudentFirstName(firstName);
+			student.setStudentLastName(lastName);
+			student.setSemMarks(marks);
+			
+			studentList.add(student);
+			
+		}
+		
+		
+		System.out.println("Student Record");
+		for( Student student: studentList)
+			System.out.println(student);
+		
+		Collections.sort(studentList);
+		
+		System.out.println("Student Records based on Age:");
+		for(Student student: studentList)
+			System.out.println(student);	
+		
+		System.out.println("Student Records based on First Name");
+		Collections.sort(studentList, new ListStudentPractice() .new SortStudentBasedOnFirstName());
+		for(Student student: studentList)
+			System.out.println(student);
+		
+		System.out.println("Student Records based on Last Name");
+		Collections.sort(studentList, new ListStudentPractice() .new SortStudentBasedOnLastName());
+		for(Student student: studentList)
+			System.out.println(student);
+		
+		System.out.println("Student Records based on precentage");
+		Collections.sort(studentList);
+		Collections.sort(studentList, new ListStudentPractice(). new SortStudentBasedOnPercentage());
+		for(Student student: studentList)
+			System.out.println(student);
+		
+		
+		
+	}
+
+}
