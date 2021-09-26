@@ -1,0 +1,196 @@
+Using TDD find fourth largest element of an array given size greater than 5
+
+package com.yash.test;
+import static org.junit.Assert.*;
+
+import java.util.Arrays;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+
+
+public class TestLargestElement {
+	
+	private LargestElement tLEObject= null;
+	
+	@Before
+	public void setup()
+	{
+		tLEObject = new LargestElement();
+	}
+	
+	@After
+	public void tearDown()
+	{
+		tLEObject=null;
+	}
+	
+	@Test
+	public void testFourthLargestElement_PositiveTest()
+	{
+		int[] testData= tLEObject.integerArray;
+		Arrays.sort(testData);
+		int expectedValue=testData[tLEObject.integerArray.length-4];
+		int actualValue = tLEObject.fourhLargestElement();
+		assertEquals(expectedValue, actualValue);
+		
+	}
+	
+	@Test
+	public void testArrayLength_NegativeTest()
+	{
+		int arrayLength=tLEObject.integerArray.length;
+		try
+		{
+			if(arrayLength<5)
+				assertTrue(false);
+		}catch(RuntimeException e)
+		{
+			assertTrue(true);
+		}
+
+		try {
+			if(arrayLength==0)
+			{
+				assertTrue(false);
+			}
+		}catch(RuntimeException e)
+		{
+			assertTrue(true);
+			System.out.println("Array can not be empty");
+		}
+ 
+	}
+
+}
+
+package com.yash.test;
+
+import java.util.Scanner;
+
+public class LargestElement {
+
+	public int[] integerArray;
+
+	public int fourhLargestElement() {
+		
+		Scanner sc =new Scanner(System.in);
+		
+		System.out.print("Enter no of element in the array");
+		int numberOfElements= sc.nextInt();
+		integerArray = new int[numberOfElements];
+		
+		System.out.print("Enter array elements");
+		for(int i=0;i<=integerArray.length;i++)
+		{
+			integerArray[i]=sc.nextInt();
+		}
+		
+		int temp;
+		for(int j=0;j<integerArray.length;j++)
+		{
+			for(int k=j+1;k<integerArray.length;k++)
+			if(integerArray[j]>integerArray[k])
+			{
+				temp=integerArray[j];
+				integerArray[j]=integerArray[k];
+				integerArray[k]=temp;
+			}
+		}
+		return integerArray[numberOfElements-4];
+	}
+
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Using TDD count the number of duplicates elements in an array of type String of size 10
+
+
+package com.yash.test;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class TestCountDuplicate {
+	
+	CountDuplicate cPObject = null;
+	
+	@Before
+	public void setup()
+	{
+		cPObject = new CountDuplicate();
+	}
+	
+	@After
+	public void tearDown()
+	{
+		cPObject = null;
+	}
+
+	@Test
+	public void testCountDuplicate_PositiveTest() {
+		
+		String[] testStringArray = cPObject.stringArray;
+		int expected = 3;
+		int actual= cPObject.countDuplicateElememts();
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testArrayLength_NegativeTest()
+	{
+		int arrayLength=cPObject.stringArray.length;
+		try {
+			if(arrayLength<=10)
+			{
+				assertTrue(false);
+			}
+		}
+		catch(RuntimeException e)
+		{
+			assertTrue(true);
+			System.out.println("Array size is not sufficient");
+		}
+		
+		try {
+			if(arrayLength==0)
+			{
+				assertTrue(false);
+			}
+		}catch(RuntimeException e)
+		{
+			assertTrue(true);
+			System.out.println("Array can not be empty");
+		}
+	}
+
+}
+
+package com.yash.test;
+
+public class CountDuplicate {
+
+	public String[] stringArray = {};
+	int count= 0;
+
+	public int countDuplicateElememts() {
+
+		for(int i=0;i<stringArray.length;i++)
+		{
+			for(int j=i+1;j<stringArray.length;j++)
+			if(stringArray[i]==stringArray[j])
+			{
+				count++;
+				break;
+			}
+		}
+		return count;
+	}
+
+}
