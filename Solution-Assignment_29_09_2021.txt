@@ -1,0 +1,254 @@
+Ask end user to enter following details 
+
+ Roll no
+ Student name
+ Semester1 marks
+ Semester 2 marks
+ Semester 3 Marks
+.....
+
+Ask for four entries.
+
+Calculate percentage of marks and store into file student.dat
+
+package com.yash.io;
+
+public class StudentDetails {
+	
+	private int sRollNo;
+	private String sName;
+	private int marks_sem1;
+	private int marks_sem2;
+	private int marks_sem3;
+	private int marks_sem4;
+	private double percentage;
+	
+	public int getsRollNo() {
+		return sRollNo;
+	}
+	public void setsRollNo(int sRollNo) {
+		this.sRollNo = sRollNo;
+	}
+	public String getsName() {
+		return sName;
+	}
+	public void setsName(String sName) {
+		this.sName = sName;
+	}
+	public int getMarks_sem1() {
+		return marks_sem1;
+	}
+	public void setMarks_sem1(int marks_sem1) {
+		this.marks_sem1 = marks_sem1;
+	}
+	public int getMarks_sem2() {
+		return marks_sem2;
+	}
+	public void setMarks_sem2(int marks_sem2) {
+		this.marks_sem2 = marks_sem2;
+	}
+	public int getMarks_sem3() {
+		return marks_sem3;
+	}
+	public void setMarks_sem3(int marks_sem3) {
+		this.marks_sem3 = marks_sem3;
+	}
+	public int getMarks_sem4() {
+		return marks_sem4;
+	}
+	public void setMarks_sem4(int marks_sem4) {
+		this.marks_sem4 = marks_sem4;
+	}
+	
+	public double getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(double studentPercentage) {
+		this.percentage = studentPercentage;
+	}
+	@Override
+	public String toString() {
+		return "StudentDetails [sRollNo=" + sRollNo + ", sName=" + sName + ", marks_sem1=" + marks_sem1
+				+ ", marks_sem2=" + marks_sem2 + ", marks_sem3=" + marks_sem3 + ", marks_sem4=" + marks_sem4
+				+ ", percentage=" + percentage + "]";
+	}
+	
+	
+
+}
+
+
+package com.yash.io;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import com.yash.serialization.ObjectMapper;
+
+public class PutStudentDetails {
+
+	public static void main(String[] args) throws IOException {
+		
+		Scanner input = new Scanner(System.in);
+		StudentDetails s =new StudentDetails();
+		
+		double studentPercentage;
+		int sum=0;
+		
+		
+		System.out.print("Enter student rollNo:");
+		int rollno = input.nextInt();
+		s.setsRollNo(rollno);
+		
+		System.out.print("Enter student Name:");
+		String Name = input.next();
+		s.setsName(Name);
+		
+		System.out.println("Enter student marks for sem 1");
+		int marks_Sem1 = input.nextInt();
+		s.setMarks_sem1(marks_Sem1);
+		sum=sum+marks_Sem1;
+		
+		System.out.println("Enter student marks for sem 2");
+		int marks_Sem2 = input.nextInt();
+		s.setMarks_sem2(marks_Sem2);
+		sum=sum+marks_Sem2;
+		
+		System.out.println("Enter student marks for sem 3");
+		int marks_Sem3 = input.nextInt();
+		s.setMarks_sem3(marks_Sem3);
+		sum=sum+marks_Sem3;
+		
+		System.out.println("Enter student marks for sem 4");
+		int marks_Sem4 = input.nextInt();
+		s.setMarks_sem4(marks_Sem4);
+		sum=sum+marks_Sem4;
+		
+		studentPercentage = (sum/(4*100))*100;
+		s.setPercentage(studentPercentage);
+		List<StudentDetails> student = new ArrayList<>();
+		student.add(s);
+		
+		
+		
+		ObjectMapper mapper=new ObjectMapper();
+		//serialization
+		OutputStream os=new FileOutputStream("D:\\JavaTrainingIO\\student.dat");
+		mapper.writeValue(os, student);
+
+		
+		
+
+	}
+
+}
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Using FileVisitor search for all files with extension .java in a given folder.
+
+package com.yash.io;
+
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+
+public class FileVisitorPractice {
+	
+	public static class SearchFileVisitor extends SimpleFileVisitor<Path> {
+
+		private final PathMatcher pathMatcher;
+		private int matchCount = 0;
+
+		SearchFileVisitor(String globPattern) {
+			pathMatcher = FileSystems.getDefault().getPathMatcher(
+					"glob:" + globPattern);
+		}
+
+		@Override
+		public FileVisitResult visitFile(Path filePath,
+				BasicFileAttributes basicFileAttrib) {
+			if (pathMatcher.matches(filePath.getFileName())) {
+				matchCount++;
+				System.out.println(filePath);
+			}
+			return FileVisitResult.CONTINUE;
+		}
+
+		@Override
+		public FileVisitResult preVisitDirectory(Path directoryPath,
+				BasicFileAttributes basicFileAttrib) {
+			if (pathMatcher.matches(directoryPath.getFileName())) {
+				matchCount++;
+				System.out.println(directoryPath);
+			}
+			return FileVisitResult.CONTINUE;
+		}
+
+		public int getMatchCount() {
+			return matchCount;
+		}
+	}
+
+	public static void main(String[] args) throws IOException {
+
+		Path rootPath = Paths.get(".");
+		String globPattern = "*.java";
+
+		SearchFileVisitor searchFileVisitor = new SearchFileVisitor(globPattern);
+		Files.walkFileTree(rootPath, searchFileVisitor);
+		System.out.println("Match Count: " + searchFileVisitor.getMatchCount());
+	}
+
+}
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Create an zip file to put student.dat
+
+package com.yash.io;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+public class CreateZipPractice {
+	
+	public static void main(String[] args) {
+
+		try(
+			InputStream is=new FileInputStream("D:\\JavaTrainingIO\\student.dat");
+			OutputStream os=new FileOutputStream("D:\\JavaTrainingIO\\student.zip");
+			ZipOutputStream zos=new ZipOutputStream(os);
+		  ){
+			ZipEntry zipEntry=new ZipEntry("student.dat");
+			zos.putNextEntry(zipEntry);
+			byte[] buffer=new byte[1024];
+			int k;
+			while((k=is.read(buffer))>0) {
+				zos.write(buffer,0,k);
+			}
+			zos.closeEntry();
+		}catch(IOException e) {
+			System.err.println("--Error--");
+		}
+	}
+
+}
+
