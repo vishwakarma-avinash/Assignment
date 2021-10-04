@@ -1,0 +1,86 @@
+Create students.xsd and peform validation of students.xml using this xsd file.
+
+Student.xsd
+
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+targetNamespace="http://www.example.org/Student" 
+xmlns:tns="http://www.example.org/Student" elementFormDefault="qualified">
+<element name="Student">
+<complexType>
+<sequence>
+<element name="rollNo" type="int"/>
+<element name="sName" type="string"/>
+<element name="sAge" type="int"/>
+<element name="sCourse" type="string"/>
+</sequence>
+</complexType>
+</element>
+</schema>
+
+Student.dtd
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT Student (rollNo,sName,sAge,sCourse) >
+<!ELEMENT rollNo (#PCDATA)>
+<!ELEMENT sName (#PCDATA)>
+<!ELEMENT sAge (#PCDATA)>
+<!ELEMENT sCourse (#PCDATA)>
+
+Student.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Student SYSTEM "Student.dtd" >
+<Student>
+<rollNo>1001</rollNo>
+<sName>Alex</sName>
+<sAge>19</sAge>
+<sCourse>B. Tech</sCourse>
+</Student>
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Write code to validate data in students.xml using students.xsd created in first assignment.
+
+package XML_XSD_DTD;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+public class DataValidationPractice {
+
+	public static void main(String[] args) throws SAXException, ParserConfigurationException, IOException {
+		String language = XMLConstants.W3C_XML_SCHEMA_NS_URI;
+		SchemaFactory sf= SchemaFactory.newInstance(language);
+		
+		Schema schema = sf.newSchema(new File("D:\\JavaTrainingIO\\XML_XSD_DTD\\Student.xsd"));
+		Validator validator = schema.newValidator();
+		
+		File xmlFile = new File("D:\\\\JavaTrainingIO\\\\XML_XSD_DTD\\\\Student.xml");
+		
+		DocumentBuilderFactory dbfObject = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dbObject = dbfObject.newDocumentBuilder();
+		
+		Document doc = dbObject.parse(xmlFile);
+		DOMSource domSource = new DOMSource(doc);
+		
+		validator.validate(domSource);
+		
+		
+		
+
+	}
+
+}
