@@ -1,0 +1,330 @@
+Write  a program to simulate interview process using multithreading.
+
+Use synchronized keyword and Lock,ReentrantLock for properly synchronizing the process.
+
+package com.yash.multithreading;
+
+public class Candidate implements Runnable {
+
+	private String cName;
+	private Interview intView;
+	
+	
+
+	public Candidate(String cName, Interview intView) {
+		super();
+		this.cName = cName;
+		this.intView = intView;
+	}
+
+
+
+	@Override
+	public void run() {
+
+		System.out.println(cName+" waiting in queue.");
+		
+		synchronized(intView)
+		{
+			System.out.println(cName+" enters into the room.");
+			System.out.println(cName+"'s interview is in progress.");
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(cName+" has completed interview.");
+		}
+		
+	}
+
+}
+
+package com.yash.multithreading;
+
+import java.util.concurrent.locks.Lock;
+
+public class CandidateLock implements Runnable{
+
+	private String cName;
+	private InterviewLock ivLock;
+	Lock lock;
+	
+	public CandidateLock(String cName, InterviewLock ivLock, Lock lock) {
+		super();
+		this.cName = cName;
+		this.ivLock = ivLock;
+		this.lock = lock;
+	}
+	
+
+	@Override
+	public void run() {
+		
+		System.out.println(cName+" waiting int the queue");
+		synchronized(ivLock)
+		{
+	
+		lock.lock();
+		ivLock.giveInterview(cName);
+		lock.unlock();
+	}
+	}
+}
+
+package com.yash.multithreading;
+
+public class Interview {
+	
+	private String intViewName;
+	private String intViewLoc;
+	private String intViewBatch;
+	
+	public Interview(String intViewName, String intViewLoc, String intViewBatch) {
+		super();
+		this.intViewName = intViewName;
+		this.intViewLoc = intViewLoc;
+		this.intViewBatch = intViewBatch;
+	}
+	
+	
+	
+	
+
+}
+
+package com.yash.multithreading;
+
+public class InterviewLock {
+	
+	private String intViewName;
+	private String intViewLoc;
+	private String intViewBatch;
+	
+	public InterviewLock(String intViewName, String intViewLoc, String intViewBatch) {
+		super();
+		this.intViewName = intViewName;
+		this.intViewLoc = intViewLoc;
+		this.intViewBatch = intViewBatch;
+	}
+
+	public void giveInterview(String cName)
+	{
+			synchronized(cName) {
+			System.out.println(cName+" enters into the room.");
+			System.out.println(cName+"'s interview is in progress.");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(cName+" has completed interview.");
+		
+	}
+	}
+
+}
+
+package com.yash.multithreading;
+
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class InterviewProcess {
+	
+	public static void main(String[] args)
+	{
+		
+		
+		InterviewLock ivLock= new InterviewLock("Technical Interview", "Tehran", "CS-10J");
+		Lock lock = new ReentrantLock(true);
+	
+		synchronized(ivLock)
+		{
+	
+	Thread candidate1 = new Thread(new CandidateLock("Alex",ivLock,lock));
+	Thread candidate2 = new Thread(new CandidateLock("Riley",ivLock,lock));
+	Thread candidate3 = new Thread(new CandidateLock("Billy",ivLock,lock));
+	Thread candidate4 = new Thread(new CandidateLock("Peter",ivLock,lock));
+	Thread candidate5 = new Thread(new CandidateLock("Navil",ivLock,lock));
+	Thread candidate6 = new Thread(new CandidateLock("Jason",ivLock,lock));
+	Thread candidate7 = new Thread(new CandidateLock("Dominic",ivLock,lock));
+	Thread candidate8 = new Thread(new CandidateLock("Jemma",ivLock,lock));
+	Thread candidate9 = new Thread(new CandidateLock("Peggy",ivLock,lock));
+	Thread candidate10 = new Thread(new CandidateLock("Steve",ivLock,lock));
+	
+	candidate1.start();
+	candidate2.start();
+	candidate3.start();
+	candidate4.start();
+	candidate5.start();
+	candidate6.start();
+	candidate7.start();
+	candidate8.start();
+	candidate9.start();
+	candidate10.start();
+	
+	}
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------------------
+ write a program to do sorting of multiple arrays using multithreading.
+
+
+int[] array1={23,34,78,90};
+int[] array2={89,23};
+int[] array3={12,34,67};
+
+After arrays are sorted print sorted arrays.
+
+
+package com.yash.multithreading;
+
+public class MultithreadingPractice {
+	
+	class SortFirst extends Thread
+	{
+		public int[] sort() {
+		int[] arrayFirst = {23,34,78,90};
+		int temp=0;
+		
+		for(int i=0;i<arrayFirst.length;i++)
+		{
+			for(int j=i;j<arrayFirst.length;j++)
+			{
+				if(arrayFirst[i]>arrayFirst[j])
+				{
+					temp=arrayFirst[i];
+					arrayFirst[i]=arrayFirst[j];
+					arrayFirst[j]=temp;
+					for(int element:arrayFirst)
+						System.out.println(Thread.currentThread()+" doing "+"Sorting of Array 1 so far:"+element);
+						
+						try {
+							Thread.sleep(200);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				}
+			}
+		}
+		
+		return arrayFirst;
+		
+	}
+
+		@Override
+		public void run()
+		{
+			int[] arr = sort();
+			for(int nums:arr)
+			System.out.println("Sorted array 1 : "+nums);
+		}
+	}
+	
+	class SortSecond implements Runnable
+	{
+		public int[] sort() {
+			int[] arraySecond = {89,23};
+			int temp=0;
+			
+			for(int i=0;i<arraySecond.length;i++)
+			{
+				for(int j=i;j<arraySecond.length;j++)
+				{
+					if(arraySecond[i]>arraySecond[j])
+					{
+						temp=arraySecond[i];
+						arraySecond[i]=arraySecond[j];
+						arraySecond[j]=temp;
+						for(int element:arraySecond)
+							System.out.println(Thread.currentThread()+" doing "+"Sorting of Array 2 so far:"+element);
+							
+							try {
+								Thread.sleep(200);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+					}
+				}
+			}
+			
+			return arraySecond;
+			
+		}
+
+			@Override
+			public void run()
+			{
+				int[] arr = sort();
+				for(int nums:arr)
+				System.out.println("Sorted array 2 : "+nums);
+			}
+	}
+
+	public static void main(String[] args) {
+		
+		
+		while(true) {
+			System.out.println("Main Thread:"+Thread.currentThread());
+			
+		Thread sort1 = new Thread(new MultithreadingPractice().new SortFirst(), "Sort1 worker thread");
+		sort1.start();
+		
+		Thread sort2 = new Thread(new MultithreadingPractice().new SortSecond(), "Sort2 worker thread");
+		sort2.start();
+
+		Runnable SortThird = new Runnable() {
+			
+			public int[] sort()
+			{
+				int[] arrayThird = {12,34,67};
+				int temp=0;
+					
+					for(int i=0;i<arrayThird.length;i++)
+					{
+						for(int j=i;j<arrayThird.length;j++)
+						{
+							if(arrayThird[i]>arrayThird[j])
+							{
+								temp=arrayThird[i];
+								arrayThird[i]=arrayThird[j];
+								arrayThird[j]=temp;
+								for(int element:arrayThird)
+									System.out.println(Thread.currentThread()+" doing "+"Sorting of Array 3 so far:"+element);
+									
+									try {
+										Thread.sleep(200);
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+							}
+						}
+					}
+					
+					return arrayThird;
+					
+				}
+
+					@Override
+					public void run()
+					{
+						int[] arr = sort();
+						for(int nums:arr)
+						System.out.println("Sorted array 3 : "+nums);
+					}
+		};
+		
+		Thread sort3 =new Thread(SortThird ,"Sort3 worker Thread");
+		sort3.start();
+	}
+
+}
+}
+
