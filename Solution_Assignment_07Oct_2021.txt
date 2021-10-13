@@ -1,0 +1,152 @@
+Find summation of values of an array using Fork Join Framework
+
+package com.yash.synchronization;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveTask;
+
+public class ForkJoinImplementation {
+
+   public static void main(final String[] arguments) throws InterruptedException, 
+      ExecutionException {
+      
+      int nThreads = Runtime.getRuntime().availableProcessors();
+      System.out.println(nThreads);
+      
+      int[] numbers = new int[1000]; 
+
+      for(int i = 0; i < numbers.length; i++) {
+         numbers[i] = i;
+      }
+
+      ForkJoinPool forkJoinPool = new ForkJoinPool(nThreads);
+      Long result = forkJoinPool.invoke(new Sum(numbers,0,numbers.length));
+      System.out.println(result);
+   }  
+
+   static class Sum extends RecursiveTask<Long> {
+      int low;
+      int high;
+      int[] array;
+
+      Sum(int[] array, int low, int high) {
+         this.array = array;
+         this.low   = low;
+         this.high  = high;
+      }
+
+      protected Long compute() {
+         
+         if(high - low <= 10) {
+            long sum = 0;
+            
+            for(int i = low; i < high; ++i) 
+               sum += array[i];
+               return sum;
+         } else {	    	
+            int mid = low + (high - low) / 2;
+            Sum left  = new Sum(array, low, mid);
+            Sum right = new Sum(array, mid, high);
+            left.fork();
+            long rightResult = right.compute();
+            long leftResult  = left.join();
+            return leftResult + rightResult;
+         }
+      }
+   }
+}
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+Implement Producer consumer design pattern using BlockingQueue
+
+
+package com.yash.synchronization;
+
+import com.yash.synchronization.BlockingQueue;
+
+class consumer implements Runnable {
+  
+    BlockingQueue<Integer> obj;
+  
+    int taken = -1;
+  
+    public consumer(BlockingQueue<Integer> obj)
+    {
+        this.obj = obj;
+    }
+  
+    @Override public void run()
+    {
+        while (taken != 4) {
+            try {
+                taken = obj.take();
+                System.out.println("Consumed " + taken);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+package com.yash.synchronization;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+  
+// Creating a Main class for execution
+public class ProducerConsumerImplementation {
+    public static void main(String[] args)
+    {
+  
+        // Create an ArrayBlockingQueue object with capacity
+        // 4
+        BlockingQueue<Integer> bqueue
+            = new ArrayBlockingQueue<Integer>(4);
+  
+        // Create 1 object each for producer
+        // and consumer and pass them the common
+        // buffer created above
+        producer p1 = new producer(bqueue);
+        consumer c1 = new consumer(bqueue);
+  
+        // Create 1 thread each for producer
+        // and consumer and pass them their
+        // respective objects.
+        Thread pThread = new Thread(p1);
+        Thread cThread = new Thread(c1);
+  
+        // Start both threads
+        pThread.start();
+        cThread.start();
+    }
+}
+
+package com.yash.synchronization;
+
+import com.yash.synchronization.BlockingQueue;
+
+class producer implements Runnable {
+  
+    BlockingQueue<Integer> obj;
+  
+    public producer(BlockingQueue<Integer> obj)
+    {
+        this.obj = obj;
+    }
+  
+    @Override public void run()
+    {
+        for (int i = 1; i <= 4; i++) {
+            try {
+                obj.put(i);
+                System.out.println("Produced " + i);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
