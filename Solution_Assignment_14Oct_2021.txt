@@ -1,0 +1,133 @@
+ Ask end user to enter date of birth.
+
+ Identify day birthday will fall in next year.
+
+package com.yash.DateTime;
+
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Period;
+import java.util.Calendar;
+import java.util.Scanner;
+
+public class CheckNextBirthday {
+
+	public static void main(String[] args) {
+	
+		try(Scanner input = new Scanner(System.in))
+		{
+			LocalDate localdate = LocalDate.now();
+			int year = Calendar.getInstance().get(Calendar.YEAR);
+			
+			System.out.print("Enter you birthdate");
+			
+			System.out.print("Enter year:");
+			String yearInput =input.next();
+			int y = Integer.parseInt( yearInput );
+			
+			System.out.print("Enter month:");
+			String monthInput = input.next();
+			int m = Integer.parseInt( monthInput );  // 1-12 for January-December.
+			
+			System.out.print("Enter Day:");
+			String dayInput= input.next();
+			int d = Integer.parseInt( dayInput );
+			
+			LocalDate birthdate = LocalDate.of( y , m , d );
+			
+			LocalDate nextBirthday = birthdate.plusYears(year-y+1);
+			
+			DayOfWeek dayofWeek=nextBirthday.getDayOfWeek();
+			System.out.println("Day of Week on your next Birthday : "+dayofWeek);
+		}
+
+	}
+
+}
+------------------------------------------------------------------------------------------------------------------------------
+
+Identify number of Years from 15th August,1947 till date.
+
+package com.yash.DateTime;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+
+public class YearSinceIndependance {
+
+	public static void main(String[] args)
+	{
+		
+			LocalDate firstIndependanceDay = LocalDate.of(1947, Month.AUGUST, 15);
+			LocalDate today = LocalDate.now();
+			Period period= firstIndependanceDay.until(today);
+			int yearsBetween = period.getYears();
+			long daysBetween= period.getDays();
+			
+			long noOfDaysBetween = ChronoUnit.DAYS.between(firstIndependanceDay, today);
+			
+			long monthsBetween = ChronoUnit.MONTHS.between(firstIndependanceDay, today);
+			
+			System.out.println("Years since our independance: "+yearsBetween);
+			System.out.println("Months since our independance: "+monthsBetween);
+			System.out.println("Days since our independance: "+noOfDaysBetween);
+			System.out.println("It is not correct : "+daysBetween);
+		
+		
+
+	}
+
+}
+-----------------------------------------------------------------------------------------------------------------------------
+
+Get current time for following cities,
+
+   1.London
+   2.Berlin
+   3.New York- America/New_York
+   4.Mumbai
+   5.Singapore
+
+package com.yash.DateTime;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+public class TimeInDifferentCities {
+
+	public static void main(String[] args) {
+		
+		LocalDateTime localDateTime=LocalDateTime.now();
+		
+		ZoneId EuropeLondon = ZoneId.of("Europe/London");
+		ZonedDateTime timeInLondon=ZonedDateTime.of(localDateTime, EuropeLondon);
+		System.out.println(timeInLondon);
+		
+		ZoneId AsiaMumbai = ZoneId.of("Asia/Kolkata");
+		ZonedDateTime timeInMumbai=ZonedDateTime.of(localDateTime, AsiaMumbai);
+		System.out.println(timeInMumbai);
+		
+		ZoneId EuropeBerlin = ZoneId.of("Europe/Berlin");
+		ZonedDateTime timeInBerlin=ZonedDateTime.of(localDateTime, EuropeBerlin);
+		System.out.println(timeInBerlin);
+		
+		ZoneId AmericaNewYork = ZoneId.of("America/New_York");
+		ZonedDateTime timeInNewYork=ZonedDateTime.of(localDateTime, AmericaNewYork);
+		System.out.println(timeInNewYork);
+		
+		ZoneId AsiaSingapore = ZoneId.of("Asia/Singapore");
+		ZonedDateTime timeInSingapore=ZonedDateTime.of(localDateTime, AsiaSingapore);
+		System.out.println(timeInSingapore);
+
+	}
+
+}
+
+------------------------------------------------------------------------------------------------------------------------------
+
