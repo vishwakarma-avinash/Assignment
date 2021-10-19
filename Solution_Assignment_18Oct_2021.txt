@@ -1,0 +1,111 @@
+Create a maven project with dependency of JUnit,Hamcrest and write test condition for following;
+
+
+1. For a given list if it contains following elements,
+  
+   1,9,10
+
+2. For a given map it has a key -1001 and value- 10000
+
+3. For a given String it starts with "S" and endwith with "h"
+
+4. For a given reference variable it is not null
+
+
+Generate report of above project using surefire plugin
+
+package com.yash.test;
+
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class JUnit4Practice {
+	
+	@Test
+	public void testIfListContainsElement()
+	{
+		List<Integer> integerList = new ArrayList<Integer>();
+		integerList.add(1);
+		integerList.add(3);
+		integerList.add(5);
+		integerList.add(10);
+		integerList.add(7);
+		integerList.add(9);
+		integerList.add(6);
+		
+		List<Integer> element = new ArrayList<Integer>();
+		element.add(1);
+		element.add(9);
+		element.add(10);
+		assertTrue("List contains 1,9 and 10",integerList.containsAll(element));
+	}
+	
+	@Test
+	public void testKeyValueInMap()
+	{
+		Map<Integer, Integer> pair = new HashMap<Integer, Integer>();
+		pair.put(1000, 10000);
+		pair.put(-1001, 10000);
+		pair.put(1001, 10000);
+		
+		
+		assertTrue("Map contains -1001:10000 key:value pair",pair.containsKey(-1001));
+		
+		
+	}
+	
+	
+
+}
+
+package com.yash.test;
+
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import org.hamcrest.Matcher;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matcher.*;
+import org.junit.Test;
+
+public class HamcrestPractice {
+
+	
+	@Test
+	public void testStringAtStart() {
+	
+		String string= "Samar";
+		char startsWith = string.charAt(0);
+		assertThat(startsWith, is("S"));
+		
+	}
+
+	@Test
+	public void testStringAtEnd()
+	{
+		String string = "Shikhar";
+		char endsWith = string.charAt(string.length()-1);
+		assertThat(endsWith, is("r"));
+	}
+	
+	@Test
+	public void testIfReferenceNotNull()
+	{
+		String str = "Smile";
+		assertThat(str, is("Smile"));
+	}
+
+}
+
+
+
+
+
