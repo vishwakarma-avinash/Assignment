@@ -1,0 +1,170 @@
+ Create a list of students using Builder design pattern.
+
+   Attributes in Student
+     int rollNo
+     String firstName
+     String lastName
+     int semester1Marks
+     int semester2Marks
+     int semester3Marks
+     ......
+
+
+package com.yash.Builder;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class Student {
+	
+	private Student() 
+	{}
+	
+	private int rollNo;
+	private String firstName;
+	private String lastName;
+	private int sem1Marks;
+	private int sem2Marks;
+	private int sem3Marks;
+	
+	private Student(Student.Builder builder)
+	{
+		this.rollNo=builder.rollNo;
+		this.firstName=builder.firstName;
+		this.lastName=builder.lastName;
+		this.sem1Marks=builder.sem1Marks;
+		this.sem2Marks=builder.sem2Marks;
+		this.sem3Marks=builder.sem3Marks;
+	}
+	
+	
+	public int getRollNo() {
+		return rollNo;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public int getSem1Marks() {
+		return sem1Marks;
+	}
+
+	public int getSem2Marks() {
+		return sem2Marks;
+	}
+
+	public int getSem3Marks() {
+		return sem3Marks;
+	}
+
+
+	private static class Builder
+	{
+		private int rollNo;
+		private String firstName;
+		private String lastName;
+		private int sem1Marks;
+		private int sem2Marks;
+		private int sem3Marks;
+		
+		public Builder()
+		{
+			
+		}
+
+		public Builder setRollNo(int rollNo) {
+			this.rollNo = rollNo;
+			return this;
+		}
+
+		public Builder setFirstName(String firstName) {
+			this.firstName = firstName;
+			return this;
+		}
+
+		public Builder setlastName(String lastName) {
+			this.lastName = lastName;
+			return this;
+		}
+
+		public Builder setSem1Marks(int sem1Marks) {
+			this.sem1Marks = sem1Marks;
+			return this;
+		}
+
+		public Builder setSem2Marks(int sem2Marks) {
+			this.sem2Marks = sem2Marks;
+			return this;
+		}
+
+		public Builder setSem3Marks(int sem3Marks) {
+			this.sem3Marks = sem3Marks;
+			return this;
+		}
+		
+		public Student build()
+		{
+			return new Student(this);
+			
+		}
+	}
+
+	public static List<Student> createStudentList(){
+		return Arrays.asList(
+				
+				new Student.Builder()
+				.setRollNo(10001)
+				.setFirstName("Alex")
+				.setlastName("Smith")
+				.setSem1Marks(78)
+				.setSem2Marks(98)
+				.setSem3Marks(83)
+				.build(),
+				
+				new Student.Builder()
+				.setRollNo(10003)
+				.setFirstName("Olly")
+				.setlastName("Pope")
+				.setSem1Marks(66)
+				.setSem2Marks(76)
+				.setSem3Marks(84)
+				.build(),
+				
+				new Student.Builder()
+				.setRollNo(10002)
+				.setFirstName("Joe")
+				.setlastName("Root")
+				.setSem1Marks(56)
+				.setSem2Marks(79)
+				.setSem3Marks(58)
+				.build()
+				);
+	}
+
+	@Override
+	public String toString() {
+		return "Student [rollNo=" + rollNo + ", firstName=" + firstName + ", lastName=" + lastName + ", sem1Marks="
+				+ sem1Marks + ", sem2Marks=" + sem2Marks + ", sem3Marks=" + sem3Marks + "]";
+	}
+
+	
+}
+
+package com.yash.Builder;
+
+import java.util.List;
+
+public class BuilderPractice {
+	
+	public static void main(String args[])
+	{
+		List<Student> studentList = Student.createStudentList();
+		studentList.forEach(System.out::println);
+	}
+
+}
