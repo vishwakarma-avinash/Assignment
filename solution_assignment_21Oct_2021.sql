@@ -20,7 +20,7 @@ where department_id in(10,20,30);
 /*  Search for employees whose name starts with K and ends with n. */
 select *
 from employees
-where first_name like 'K%' and last_name like '%n';
+where first_name like 'K%n';
 
 /*  Search for employees whose last name contains 'oc' */
 select employee_id, first_name, last_name
